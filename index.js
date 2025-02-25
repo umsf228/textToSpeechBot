@@ -3,8 +3,12 @@ import { Client, GatewayIntentBits } from 'discord.js';
 import { createAudioPlayer, createAudioResource, joinVoiceChannel, AudioPlayerStatus  } from '@discordjs/voice';
 import googleTTS from "google-tts-api";
 import splitString from './helpers/split-string.js';
+import express from 'express';
 
 configDotenv()
+
+const app = express()
+const PORT = process.env.PORT || 8000;
 
 const client = new Client({
     intents: [
@@ -67,3 +71,11 @@ client.on('messageCreate', async (message) => {
 });
 
 client.login(process.env.TOKEN);
+
+app.get("/", (req, res) => {
+    res.send("Bot is running!");
+});
+
+app.listen(PORT, () => {
+    console.log(`Health check server running on port ${PORT}`);
+});
